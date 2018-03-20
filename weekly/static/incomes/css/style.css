@@ -1,0 +1,153 @@
+body{
+  font-family: dosis;
+}
+h1, h2 {
+  font-family: Oswald;
+  color: #555;
+}
+h3, h4, h5 {
+  font-family: dosis;
+  color: #555;
+}
+a:hover{
+  color: #555;
+  text-decoration: none;
+  font-weight: 400;
+}
+form{
+  color: #555;
+}
+.bgcustom_blue{
+  background-color: #a5defb;
+}
+.bgcustom_green{
+  background-color: lightgreen;
+  color: #ddd;
+}
+.bgcustom_red{
+  background-color: #fd5363;
+  color: #fff !important;
+}
+.custom_navbar{
+  background-color: #fff;
+  -webkit-box-shadow: 0px 0px 8px 2px #999;}
+
+header{
+  width: 100%;
+  background-color: #62DDBD;
+  padding: 20px 0px;
+  border-bottom: 1px solid #ccc;
+}
+.core_text{
+  font-size: 1.2em;
+  color: #555;
+}
+.perc_text_header{
+  font-size: .8em;
+  margin-bottom: 1em;
+}
+.nav_block{
+  margin-top: 40px;
+}
+.nav_block_fix{
+  top: 70px;
+  position: sticky;
+}
+.nav_scrollarea{
+  overflow-y: auto;
+  max-height: calc(100vh - 155px);
+  display: block;
+  padding-right: 2.5em;
+}
+.nav_elem{
+  font-family: dosis;
+  color: #555;
+  font-size: 1em;
+  padding: 5px 0px;
+}
+.title_button{
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 0.5em 2em;
+  float: left;
+  margin-right: 1em;
+  color: #555;
+  font-size: .8em;
+}
+.title_button:hover{
+  background-color: #62DDBD;
+}
+.mst_feat_vbtn{float: left;}
+.mst_button_feat{
+  background-color: #62DDBD;
+  color: white;
+  margin: .6em;
+  display: block;
+}
+.title_details{
+  border-bottom: 2px solid #555;
+}
+.one_third{
+  width: 33%;
+}
+.highlights > p, ul{
+  margin-bottom: 0px !important;
+}
+.card{
+  min-height: 250px;
+}
+.section{
+  border: 1px solid lightgrey;
+  padding: 0 1em;
+  border-radius: 6px;
+  background-color: #eef;
+}
+.separator{
+  height: 10em;
+}
+.bottom_bar{
+  background-color: rgba(0,0,0,.7);
+  border: 1px solid #999;
+  border-top-left-radius: .7em;
+  border-top-right-radius: .7em;
+  padding: 1em .5em;
+  width: 80%;
+  margin: 0 auto;
+}
+.bottom_button{
+  background-color: #62DDBD;
+  color: #222;
+}
+.canvas{
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+  height: 200px;
+}
+.col_container{
+  width: 14%;
+  height: 100%;
+  position: relative;
+}
+.bu_bg{background-color: #03A9F4;}
+.opk_bg{background-color: #CDDC39;}
+.sb_bg{background-color: #8BC34A;}
+.sp_bg{background-color: #9E9E9E;}
+.kic_bg{
+  background-color: #9C27B0;
+  color: white;
+}
+.ut_bg{background-color: #eee;}
+.col_bar{
+  /*background: #ddd;*/
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  width: 80%;
+  position: absolute;
+  bottom: 0;
+  font-size: .8em;
+}
+.sport{
+  position: absolute;
+  bottom: 30;
+
+}

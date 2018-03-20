@@ -1,0 +1,664 @@
+{% extends 'weekly/base.html' %}
+  {% block nav %}
+    <div class="col-md-2">
+      <div class="ml-2 nav_block" id="side_nav">
+        <h2> Nav panel </h2>
+        <div class="nav_scrollarea">
+          <ul class="nav flex-column ml-3">
+            {% for weekly_list in weekly_list %}
+              <li class="nav-item nav_elem" >
+                <span class="d-inline-block">(#{{weekly_list.WeekNumber}}) · {{ weekly_list.week_started }}</span>
+                <span class="d-inline-block ml-2"><a href="#{{weekly_list.week_name}}">
+                {{weekly_list.week_name}} </a></span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {% endblock %}
+
+  {% block 2018content %}
+    <div class="col-md-10">
+      <p><strong>[On 2017]</strong>
+        <span class="px-2">Avg rate: {{avg_rate}}</span>
+        <span class="px-2">Avg sleep: {{avg_sleep}}h</span>
+        <span class="px-2 mr-4">Avg time tracked: {{avg_timetk}}h</span>
+        <span class="ml-4"><strong>[On 2018]</strong></span>
+        <span class="px-2">Avg rate: {{avg_rate_2018}}</span>
+        <span class="px-2">Avg sleep: {{avg_sleep_2018}}h</span>
+        <span class="px-2">Avg time tracked: {{avg_timetk_2018}}h</span>
+      </p>
+      {% for weekly_list in weeks2018 %}
+        <section id="{{weekly_list.week_name}}">
+          <!-- Header Info Buttons -->
+          <div class="container-fluid mt-4">
+          <!-- Details card -->
+          <div class="card">
+          <div class="card-body core_text">
+            <div class="ml-2 d-flex perc_text_header">
+              <span class="pr-4">BuildUp: {{weekly_list.BuPerc}}%</span>
+              <span class="px-4">OpK: {{weekly_list.OpkPerc}}%</span>
+              <span class="px-4">StuffBox: {{weekly_list.StuffPerc}}%</span>
+              <span class="px-4">Kic: {{weekly_list.KicPerc}}%</span>
+              <span class="px-4">Sport: {{weekly_list.SportPerc}}%</span>
+              <span class="px-4">Junk: {{weekly_list.JunkPerc}}%</span>
+              <span class="px-4">Untracked: {{weekly_list.UntrackedTimePerc}}%</span>
+              <span class="ml-4">
+                <a class="" href="{% url 'week_edit' pk=weekly_list.pk %}">
+                  <i class="fa fa-edit"> Edit this week</i>
+                </a>
+              </span>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-4">
+                <div class="title_button bgcustom_blue mb-2">
+                  <strong>{{weekly_list.week_name}} week <br> {{ weekly_list.week_started }}</strong>
+                </div>
+                {% if weekly_list.week_rate >= avg_rate %}
+                  <div class="title_button bgcustom_green mb-2">
+                {% endif %}
+                {% if weekly_list.week_rate < avg_rate %}
+                  <div class="title_button bgcustom_red mb-2">
+                {% endif %}
+                  <strong><i class="fa fa-star pr-2"></i>{{ weekly_list.week_rate }}</strong>
+                </div>
+                {% if weekly_list.time_tracked >= avg_timetk %}
+                <div class="title_button bgcustom_green my-2">
+                {% endif %}
+                {% if weekly_list.time_tracked < avg_timetk %}
+                <div class="title_button bgcustom_red my-2">
+                {% endif %}
+                  <strong><i class="fa fa-clock-o pr-2"></i>{{weekly_list.time_tracked}} hours tracked</strong>
+                </div>
+                {% if weekly_list.stuff_sleeping_time >= avg_sleep %}
+                <div class="title_button bgcustom_green my-2">
+                {% endif %}
+                {% if weekly_list.stuff_sleeping_time < avg_sleep %}
+                <div class="title_button bgcustom_red my-2">
+                {% endif %}
+                  <strong><i class="fa fa-moon-o pr-2"></i>{{weekly_list.stuff_sleeping_time}} hours sleeping</strong>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-5">
+                <h3><strong>Highlights:</strong></h3>
+                <div class="pl-2 highlights">{{weekly_list.highlights|safe}}</div>
+              </div>
+              <div class="col-sm-12 col-md-3">
+                <h3><strong>Leaks:</strong></h3>
+                <div class="pl-2">{{weekly_list.leaks|safe}}</div>
+              </div>
+            </div>
+            <!-- Details button -->
+            <div class="collapse" id="collapse{{weekly_list.pk}}">
+              <div id="feat_panel{{weekly_list.pk}}">
+
+                <!-- Sidebar Buttons -->
+                <div>
+                  <div class="nav nav-tabs" role="tablist">
+                      <a class="btn mst_button_feat active" data-toggle="tab" href="#StatsFeat{{weekly_list.pk}}">
+                        Stats <i class="fa fa-chevron-down"></i>
+                      </a>
+                      <a class="btn mst_button_feat" data-toggle="tab" href="#BuildUpFeat{{weekly_list.pk}}">
+                        BuildUP <i class="fa fa-chevron-down"></i>
+                      </a>
+                      <a class="btn mst_button_feat" href="#OpKFeat{{weekly_list.pk}}" data-toggle="tab">
+                      OpK <i class="fa fa-chevron-down"></i>
+                      </a>
+                      <a class="btn mst_button_feat" href="#KiCFeat{{weekly_list.pk}}" data-toggle="tab">
+                      KiC <i class="fa fa-chevron-down"></i>
+                      </a>
+                      <a class="btn mst_button_feat" href="#OtherFeat{{weekly_list.pk}}" data-toggle="tab">
+                      Stuff.Box <i class="fa fa-chevron-down"></i>
+                      </a>
+                      <a class="btn mst_button_feat" href="#SportFeat{{weekly_list.pk}}" data-toggle="tab">
+                      Sport<i class="fa fa-chevron-down"></i>
+                      </a>
+                  </div>
+
+                  <!-- Details content-->
+                  <div class="tab-content mst_feat" id="feat_panel{{weekly_list.pk}}">
+
+                    <!-- Stats details -->
+                    <div id="StatsFeat{{weekly_list.pk}}" class="tab-pane fade show active" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">Stats features · Awake time {{weekly_list.AwakeTime}}h</h4>
+                            <div class="">
+                              <div class="d-flex justify-content-center align-items-end canvas">
+                                <div class="col_container">
+                                  <div class="d-flex col_bar bu_bg" style="height: calc(2 * {{weekly_list.BuildUpSum}}%);">
+                                    <div class="m-auto text-center">
+                                      BuildUp<br>
+                                      {{weekly_list.BuildUpSum}}h
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col_container">
+                                  <div class="col_bar opk_bg" style="height: calc(2 * {{weekly_list.OpkSum}}%);">
+                                    <div class="m-auto text-center">
+                                      OpK<br>
+                                      {{weekly_list.OpkSum}}h
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col_container">
+                                  <div class="col_bar sb_bg" style="height: calc(2 * {{weekly_list.StuffSum}}%);">
+                                    <div class="m-auto text-center">
+                                      StuffBox · {{weekly_list.StuffSum}}h
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col_container">
+                                  <div class="col_bar sp_bg" style="height: calc(2 * {{weekly_list.SportSum}}%);">
+                                    <div class="m-auto text-center">
+                                      Sport · {{weekly_list.SportSum}}h
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col_container">
+                                  <div class="col_bar kic_bg" style="height: calc(2 * {{weekly_list.kic_time}}%);">
+                                    <div class="m-auto text-center">
+                                      KiC · {{weekly_list.kic_time}}h<br>
+                                      {{ weekly_list.published_date__year}}
+                                    </div>
+                                  </div>
+                                </div>
+                                {% if weekly_list.published_date__year == '2018' %}
+                                <div class="col_container">
+                                  <div class="col_bar ut_bg" style="height: calc(2 * {{weekly_list.UntrackedTime}}%);">
+                                    <div class="m-auto text-center">
+                                      Untracked<br>
+                                      {{weekly_list.UntrackedTime}}h
+                                    </div>
+                                  </div>
+                                </div>
+                                {% endif %}
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- BuildUp Details -->
+                    <div id="BuildUpFeat{{weekly_list.pk}}" class="tab-pane fade" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">BuildUp features · Time: {{weekly_list.BuildUpSum}}h ({{weekly_list.BuPerc}}%)</h4>
+                          <div class="pl-2">
+                            <div class="flex-row clearfix">
+                              <span class="float-left pr-4"><strong> Focusing:</span>
+                              <span class="float-left text-success pr-4">Hi: {{weekly_list.bu_hi_time}}%</span>
+                              <span class="float-left text-warning pr-4">Mid: {{weekly_list.bu_mid_time}}%</span>
+                              <span class="float-left text-danger">Lo: {{weekly_list.bu_lo_time}}%</strong></span>
+                            </div>
+                            <div class="row">
+                              <div class="w-50 p-3">
+                                <h4 class="title_details"><strong>Math</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_math_time}}h</h4>
+                                <p>{{ weekly_list.bu_math_details | safe }}</p>
+                              </div>
+                              <div class="w-50 p-3">
+                                <h4 class="title_details"><strong>Computer Science</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_cs_time}}h</h4>
+                                <p>{{ weekly_list.bu_cs_details | safe }}</p>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="w-25 p-3">
+                                <h4 class="title_details"><strong>Deutsch</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_lg_de_time}}h</h4>
+                                <p class="text-center">{{ weekly_list.bu_lg_de_details | safe }}</p>
+                              </div>
+                              <div class="w-25 p-3">
+                                <h4 class="title_details"><strong>Français</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_lg_fr_time}}h</h4>
+                                <p class="text-center">{{ weekly_list.bu_lg_fr_details | safe }}</p>
+                              </div>
+                              <div class="w-25 p-3">
+                                <h4 class="title_details"><strong>Jap</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_lg_jap_time}}h</h4>
+                                <p class="text-center">{{ weekly_list.bu_lg_jap_details | safe }}</p>
+                              </div>
+                              <div class="w-25 p-3">
+                                <h4 class="title_details"><strong>Others</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_others_time}}h</h4>
+                                <p class="text-center">{{ weekly_list.bu_others_details | safe }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- OpK Details -->
+                    <div id="OpKFeat{{weekly_list.pk}}" class="tab-pane fade" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">OpK features<i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_tourne_time|add:weekly_list.opk_gobasquing_time|add:weekly_list.opk_urgoiti_time|add:weekly_list.opk_other_tours_time|add:weekly_list.opk_tries_time }}h</h4>
+                          <div class="pl-2">
+                            <div class="row">
+                              <div class="w-50 p-3">
+                                <h4 class="title_details"><strong>Tourné</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_tourne_time}}h</h4>
+                                <p>{{ weekly_list.opk_tourne_details | safe }}</p>
+                              </div>
+                              <div class="w-50 p-3">
+                                <h4 class="title_details"><strong>GoBasquing</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_gobasquing_time}}h</h4>
+                                <p>{{ weekly_list.opk_gobasquing_details | safe }}</p>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Urgoiti</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_urgoiti_time}}h</h4>
+                                <p>{{ weekly_list.opk_urgoiti_details | safe }}</p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Others</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_other_tours_time}}h</h4>
+                                <p>{{ weekly_list.opk_other_tours_details | safe }}</p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Tries</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_tries_time}}h</h4>
+                                <p>{{ weekly_list.opk_tries_details | safe }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- KiC Details -->
+                    <div id="KiCFeat{{weekly_list.pk}}" class="tab-pane fade" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">KiC features <i class="fa fa-clock-o pl-2"></i> {{weekly_list.kic_time}}h ({{weekly_list.KicPerc}})</h4>
+                          <p>{{ weekly_list.kic_details | safe }}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Other Stuff Details -->
+                    <div id="OtherFeat{{weekly_list.pk}}" class="tab-pane fade" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">Other features</h4>
+                          <div class="pl-2">
+                            <div class="row">
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Shared Time</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.stuff_shared_time}}h</h4>
+                                <p>{{ weekly_list.stuff_shared_details | safe }}</p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Ortu</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.stuff_ortu_time}}h</h4>
+                                <p>{{ weekly_list.stuff_ortu_details | safe }}</p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Others</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.stuff_others_time}}h</h4>
+                                <p>{{ weekly_list.stuff_others_details | safe }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Sport & wellness Details -->
+                    <div id="SportFeat{{weekly_list.pk}}" class="tab-pane fade" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">Sport features</h4>
+                          <div class="pl-2">
+                            <div class="flex-row clearfix">
+                              <span class="float-left pr-4"><strong> Overall:</span>
+                              <span class="float-left text-danger pr-4">Cal burnt: {{weekly_list.sport_cal}} calories</span>
+                              <span class="float-left text-warning">Intensity: {{weekly_list.sport_intensity}} minutes</span></strong>
+                            </div>
+                            <div class="row">
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Running</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.sport_run_time}}h</h4>
+                                <p>Distance: {{ weekly_list.sport_run_dst }} km</br>
+                                  Pace: {{ weekly_list.sport_run_pace }} per km</br>
+                                  Altitude: {{ weekly_list.sport_run_alt }} meters</br></p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Bike</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.sport_bike_time}}h</h4>
+                                <p>Distance: {{ weekly_list.sport_bike_dst}} Km</br>
+                                  Altitude: {{ weekly_list.sport_bike_alt}} meters</br>
+                                </p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Others</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.sport_others_time}}h</h4>
+                                <p>{{ weekly_list.sport_others_details | safe }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center my-3">
+              <a class="title_button" data-toggle="collapse" href="#collapse{{weekly_list.pk}}" aria-expanded="false" aria-controls="collapse{{weekly_list.pk}}"> show more <i class="fa fa-chevron-down"></i></a>
+            </div>
+          </div>
+          </div>
+        </div>
+        </section>
+      {% endfor %}
+
+    <!-- </div> -->
+  {% endblock %}
+
+  {% block 2017content %}
+    <!-- <div class="col-md-10"> -->
+
+      {% for weekly_list in weeks2017 %}
+        <section id="{{weekly_list.week_name}}">
+          <!-- Header Info Buttons -->
+          <div class="container-fluid mt-4">
+            <div class="d-block clearfix flex-row mb-2">
+              <div class="title_button bgcustom_blue">
+                <strong>{{weekly_list.week_name}} week · {{ weekly_list.week_started }}</strong>
+              </div>
+              {% if weekly_list.week_rate >= avg_rate %}
+              <div class="title_button bgcustom_green">
+              {% endif %}
+              {% if weekly_list.week_rate < avg_rate %}
+              <div class="title_button bgcustom_red">
+              {% endif %}
+                <strong><i class="fa fa-star pr-2"></i>{{ weekly_list.week_rate }}</strong>
+              </div>
+              {% if weekly_list.time_tracked >= avg_timetk %}
+              <div class="title_button bgcustom_green">
+              {% endif %}
+              {% if weekly_list.time_tracked < avg_timetk %}
+              <div class="title_button bgcustom_red">
+              {% endif %}
+                <strong><i class="fa fa-clock-o pr-2"></i>{{weekly_list.time_tracked}} hours tracked</strong>
+              </div>
+              {% if weekly_list.stuff_sleeping_time >= avg_sleep %}
+              <div class="title_button bgcustom_green">
+              {% endif %}
+              {% if weekly_list.stuff_sleeping_time < avg_sleep %}
+              <div class="title_button bgcustom_red">
+              {% endif %}
+                <strong><i class="fa fa-moon-o pr-2"></i>{{weekly_list.stuff_sleeping_time}} hours sleeping</strong>
+              </div>
+            </div>
+            <div class="ml-2 d-flex">
+              <span class="pr-4">BuildUp: {{weekly_list.BuPerc}}%</span>
+              <span class="px-4">OpK: {{weekly_list.OpkPerc}}%</span>
+              <span class="px-4">StuffBox: {{weekly_list.StuffPerc}}%</span>
+              <span class="px-4">Kic: {{weekly_list.KicPerc}}%</span>
+              <span class="px-4">Sport: {{weekly_list.SportPerc}}%</span>
+              <span class="px-4">Junk: {{weekly_list.JunkPerc}}%</span>
+              <span class="px-4">Untracked: {{weekly_list.UntrackedTimePerc}}%</span>
+              <span class="ml-4">
+                <a class="" href="{% url 'week_edit' pk=weekly_list.pk %}">
+                  <i class="fa fa-edit"> Edit this week</i>
+                </a>
+              </span>
+            </div>
+
+          <!-- Details card -->
+          <div class="card">
+          <div class="card-body core_text">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <h3><strong>Highlights:</strong></h3>
+                <div class="pl-2 highlights">{{weekly_list.highlights|safe}}</div>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <h3><strong>Leaks:</strong></h3>
+                <div class="pl-2">{{weekly_list.leaks|safe}}</div>
+              </div>
+            </div>
+            <!-- Details button -->
+            <div class="collapse" id="collapse{{weekly_list.pk}}">
+              <div id="feat_panel{{weekly_list.pk}}">
+
+                <!-- Sidebar Buttons -->
+                <div>
+                  <div class="nav nav-tabs" role="tablist">
+                      <a class="btn mst_button_feat active" data-toggle="tab" href="#StatsFeat{{weekly_list.pk}}">
+                        Stats <i class="fa fa-chevron-down"></i>
+                      </a>
+                      <a class="btn mst_button_feat" data-toggle="tab" href="#BuildUpFeat{{weekly_list.pk}}">
+                        BuildUP <i class="fa fa-chevron-down"></i>
+                      </a>
+                      <a class="btn mst_button_feat" href="#OpKFeat{{weekly_list.pk}}" data-toggle="tab">
+                      OpK <i class="fa fa-chevron-down"></i>
+                      </a>
+                      <a class="btn mst_button_feat" href="#KiCFeat{{weekly_list.pk}}" data-toggle="tab">
+                      KiC <i class="fa fa-chevron-down"></i>
+                      </a>
+                      <a class="btn mst_button_feat" href="#OtherFeat{{weekly_list.pk}}" data-toggle="tab">
+                      Stuff.Box <i class="fa fa-chevron-down"></i>
+                      </a>
+                      <a class="btn mst_button_feat" href="#SportFeat{{weekly_list.pk}}" data-toggle="tab">
+                      Sport<i class="fa fa-chevron-down"></i>
+                      </a>
+                  </div>
+
+                  <!-- Details content-->
+                  <div class="tab-content mst_feat" id="feat_panel{{weekly_list.pk}}">
+
+                    <!-- Stats details -->
+                    <div id="StatsFeat{{weekly_list.pk}}" class="tab-pane fade show active" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">Stats features · Awake time {{weekly_list.AwakeTime}}h</h4>
+                            <div class="">
+                              <div class="d-flex justify-content-center align-items-end canvas">
+                                <div class="col_container">
+                                  <div class="d-flex col_bar bu_bg" style="height: calc(2 * {{weekly_list.BuildUpSum}}%);">
+                                    <div class="m-auto text-center">
+                                      BuildUp<br>
+                                      {{weekly_list.BuildUpSum}}h
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col_container">
+                                  <div class="col_bar opk_bg" style="height: calc(2 * {{weekly_list.OpkSum}}%);">
+                                    <div class="m-auto text-center">
+                                      OpK<br>
+                                      {{weekly_list.OpkSum}}h
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col_container">
+                                  <div class="col_bar sb_bg" style="height: calc(2 * {{weekly_list.StuffSum}}%);">
+                                    <div class="m-auto text-center">
+                                      StuffBox · {{weekly_list.StuffSum}}h
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col_container">
+                                  <div class="col_bar sp_bg" style="height: calc(2 * {{weekly_list.SportSum}}%);">
+                                    <div class="m-auto text-center">
+                                      Sport · {{weekly_list.SportSum}}h
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col_container">
+                                  <div class="col_bar kic_bg" style="height: calc(2 * {{weekly_list.kic_time}}%);">
+                                    <div class="m-auto text-center">
+                                      KiC · {{weekly_list.kic_time}}h<br>
+                                      {{ weekly_list.published_date__year}}
+                                    </div>
+                                  </div>
+                                </div>
+                                {% if weekly_list.published_date__year == '2018' %}
+                                <div class="col_container">
+                                  <div class="col_bar ut_bg" style="height: calc(2 * {{weekly_list.UntrackedTime}}%);">
+                                    <div class="m-auto text-center">
+                                      Untracked<br>
+                                      {{weekly_list.UntrackedTime}}h
+                                    </div>
+                                  </div>
+                                </div>
+                                {% endif %}
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- BuildUp Details -->
+                    <div id="BuildUpFeat{{weekly_list.pk}}" class="tab-pane fade" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">BuildUp features · Time: {{weekly_list.BuildUpSum}}h ({{weekly_list.BuPerc}}%)</h4>
+                          <div class="pl-2">
+                            <div class="flex-row clearfix">
+                              <span class="float-left pr-4"><strong> Focusing:</span>
+                              <span class="float-left text-success pr-4">Hi: {{weekly_list.bu_hi_time}}%</span>
+                              <span class="float-left text-warning pr-4">Mid: {{weekly_list.bu_mid_time}}%</span>
+                              <span class="float-left text-danger">Lo: {{weekly_list.bu_lo_time}}%</strong></span>
+                            </div>
+                            <div class="row">
+                              <div class="w-50 p-3">
+                                <h4 class="title_details"><strong>Math</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_math_time}}h</h4>
+                                <p>{{ weekly_list.bu_math_details | safe }}</p>
+                              </div>
+                              <div class="w-50 p-3">
+                                <h4 class="title_details"><strong>Computer Science</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_cs_time}}h</h4>
+                                <p>{{ weekly_list.bu_cs_details | safe }}</p>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="w-25 p-3">
+                                <h4 class="title_details"><strong>Deutsch</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_lg_de_time}}h</h4>
+                                <p class="text-center">{{ weekly_list.bu_lg_de_details | safe }}</p>
+                              </div>
+                              <div class="w-25 p-3">
+                                <h4 class="title_details"><strong>Français</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_lg_fr_time}}h</h4>
+                                <p class="text-center">{{ weekly_list.bu_lg_fr_details | safe }}</p>
+                              </div>
+                              <div class="w-25 p-3">
+                                <h4 class="title_details"><strong>Jap</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_lg_jap_time}}h</h4>
+                                <p class="text-center">{{ weekly_list.bu_lg_jap_details | safe }}</p>
+                              </div>
+                              <div class="w-25 p-3">
+                                <h4 class="title_details"><strong>Others</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.bu_others_time}}h</h4>
+                                <p class="text-center">{{ weekly_list.bu_others_details | safe }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- OpK Details -->
+                    <div id="OpKFeat{{weekly_list.pk}}" class="tab-pane fade" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">OpK features<i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_tourne_time|add:weekly_list.opk_gobasquing_time|add:weekly_list.opk_urgoiti_time|add:weekly_list.opk_other_tours_time|add:weekly_list.opk_tries_time }}h</h4>
+                          <div class="pl-2">
+                            <div class="row">
+                              <div class="w-50 p-3">
+                                <h4 class="title_details"><strong>Tourné</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_tourne_time}}h</h4>
+                                <p>{{ weekly_list.opk_tourne_details | safe }}</p>
+                              </div>
+                              <div class="w-50 p-3">
+                                <h4 class="title_details"><strong>GoBasquing</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_gobasquing_time}}h</h4>
+                                <p>{{ weekly_list.opk_gobasquing_details | safe }}</p>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Urgoiti</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_urgoiti_time}}h</h4>
+                                <p>{{ weekly_list.opk_urgoiti_details | safe }}</p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Others</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_other_tours_time}}h</h4>
+                                <p>{{ weekly_list.opk_other_tours_details | safe }}</p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Tries</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.opk_tries_time}}h</h4>
+                                <p>{{ weekly_list.opk_tries_details | safe }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- KiC Details -->
+                    <div id="KiCFeat{{weekly_list.pk}}" class="tab-pane fade" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">KiC features <i class="fa fa-clock-o pl-2"></i> {{weekly_list.kic_time}}h ({{weekly_list.KicPerc}})</h4>
+                          <p>{{ weekly_list.kic_details | safe }}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Other Stuff Details -->
+                    <div id="OtherFeat{{weekly_list.pk}}" class="tab-pane fade" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">Other features</h4>
+                          <div class="pl-2">
+                            <div class="row">
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Shared Time</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.stuff_shared_time}}h</h4>
+                                <p>{{ weekly_list.stuff_shared_details | safe }}</p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Ortu</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.stuff_ortu_time}}h</h4>
+                                <p>{{ weekly_list.stuff_ortu_details | safe }}</p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Others</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.stuff_others_time}}h</h4>
+                                <p>{{ weekly_list.stuff_others_details | safe }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Sport & wellness Details -->
+                    <div id="SportFeat{{weekly_list.pk}}" class="tab-pane fade" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">Sport features</h4>
+                          <div class="pl-2">
+                            <div class="flex-row clearfix">
+                              <span class="float-left pr-4"><strong> Overall:</span>
+                              <span class="float-left text-danger pr-4">Cal burnt: {{weekly_list.sport_cal}} calories</span>
+                              <span class="float-left text-warning">Intensity: {{weekly_list.sport_intensity}} minutes</span></strong>
+                            </div>
+                            <div class="row">
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Running</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.sport_run_time}}h</h4>
+                                <p>Distance: {{ weekly_list.sport_run_dst }} km</br>
+                                  Pace: {{ weekly_list.sport_run_pace }} per km</br>
+                                  Altitude: {{ weekly_list.sport_run_alt }} meters</br></p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Bike</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.sport_bike_time}}h</h4>
+                                <p>Distance: {{ weekly_list.sport_bike_dst}} Km</br>
+                                  Altitude: {{ weekly_list.sport_bike_alt}} meters</br>
+                                </p>
+                              </div>
+                              <div class="one_third p-3">
+                                <h4 class="title_details"><strong>Others</strong><i class="fa fa-clock-o pl-2"></i> {{weekly_list.sport_others_time}}h</h4>
+                                <p>{{ weekly_list.sport_others_details | safe }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center my-3">
+              <a class="title_button" data-toggle="collapse" href="#collapse{{weekly_list.pk}}" aria-expanded="false" aria-controls="collapse{{weekly_list.pk}}"> show more <i class="fa fa-chevron-down"></i></a>
+            </div>
+          </div>
+          </div>
+        </div>
+        </section>
+      {% endfor %}
+
+    </div>
+  {% endblock %}

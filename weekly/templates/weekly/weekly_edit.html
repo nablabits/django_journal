@@ -1,0 +1,301 @@
+{% extends 'weekly/base.html' %}
+
+{% block edit %}
+<div class="container-fluid">
+
+  {% if form.errors %}
+  <h2 class="my-4">Errors</h2>
+      {% for field in form %}
+          {% for error in field.errors %}
+            <strong>{{ field.name | escape }}</strong>
+              <div class="col-lg-3 alert alert-danger">
+                  <strong>{{ error | escape }}</strong>
+              </div>
+          {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+          <div class="alert alert-danger">
+              <strong>{{ error|escape }}</strong>
+          </div>
+      {% endfor %}
+  {% endif %}
+
+  <h2 class="my-4">Add a new record</h2>
+  <form method="POST" class="post-form">{% csrf_token %}
+    <!-- summary Box -->
+    <div class="section mx-2 my-4" id="main">
+      <h3 class="py-2">#1) Summary Box</h3>
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          Name:
+          <input id="{{ form.week_name.id_for_label}}" type="text" class="form-control" name="{{ form.week_name.name }}" value="{{ form.week_name.value}}" required />
+        </div>
+        <div class="form-group col-md-3">
+          Week started:
+          <input id="{{ form.week_started.id_for_label}}" type="text" class="form-control" name="{{ form.week_started.name }}" value="{{ form.week_started.value}}" required />
+        </div>
+        <div class="form-group col-md-3">
+          Rate
+          <input id="{{ form.week_rate.id_for_label}}" value="{{ form.week_rate.value}}" type="number" step="0.01" class="form-control" name="{{ form.week_rate.name }}" placeholder="Rate*" required />
+        </div>
+        <div class="form-group col-md-3">
+          Time Tracked:
+          <input id="{{ form.week_time_tracked.id_for_label}}" value="{{ form.time_tracked.value}}" type="number" step="0.01" class="form-control" name="{{ form.time_tracked.name }}" placeholder="Time tracked*" required />
+        </div>
+      </div>
+      <div class="form-row d-flex justify-content-center">
+        <div class="form-group col-md-5">
+          Highlights:
+          <textarea rows="10" class="form-control" name="{{ form.highlights.name }}" placeholder="Highlights">{{ form.highlights.value }}</textarea>
+        </div>
+        <div class="form-group col-md-5">
+          Lacks:
+          <textarea type="text" rows="10" class="form-control" name="{{ form.leaks.name }}" placeholder="Leaks">{{ form.leaks.value }}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- BuildUp -->
+    <div class="section mx-2 my-4" id="BuildUp">
+      <h3 class="py-2">#2) BuildUp Section</h3>
+      <div class="form-row">
+        <div class="form-group col-md-1">
+          Hi %
+          <input type="number" step="1" class="form-control border-success" name="{{ form.bu_hi_time.name }}" value="{{ form.bu_hi_time.value }}" required>
+          <!-- <small class="form-text text-muted">Hi%</small> -->
+          Mid %
+          <input type="number" step="1" class="form-control border-warning" name="{{ form.bu_mid_time.name }}" value="{{ form.bu_mid_time.value }}" required>
+          <!-- <small class="form-text text-muted">Mid%</small> -->
+          Lo %
+          <input type="number" step="1" class="form-control border-danger" name="{{ form.bu_lo_time.name }}" value="{{ form.bu_lo_time.value }}" required>
+          <!-- <small class="form-text text-muted">Lo%</small> -->
+        </div>
+        <div class="form-group col-md-5">
+          BuildUp.Math
+          <textarea type="text" rows="7" class="form-control" name="{{ form.bu_math_details.name }}" placeholder="BuildUp.Math">{{ form.bu_math_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-5">
+          BuildUp.CS
+          <textarea type="text" rows="7" class="form-control" name="{{ form.bu_cs_details.name }}" placeholder="BuildUp.CS">{{ form.bu_cs_details.value }}</textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          BuildUp.De
+          <textarea type="text" rows="3" class="form-control" name="{{ form.bu_lg_de_details.name }}" placeholder="BuildUp.De">{{ form.bu_lg_de_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-3">
+          BuildUp.Fr
+          <textarea type="text" rows="3" class="form-control" name="{{ form.bu_lg_fr_details.name }}" placeholder="BuildUp.Fr">{{ form.bu_lg_fr_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-3">
+          BuildUp.Jap
+          <textarea type="text" rows="3" class="form-control" name="{{ form.bu_lg_jap_details.name }}" placeholder="BuildUp.Jap">{{ form.bu_lg_jap_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-3">
+          BuildUp.Others
+          <textarea type="text" rows="3" class="form-control" name="{{ form.bu_others_details.name }}" placeholder="BuildUp.Other">{{ form.bu_others_details.value }}</textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          {{ form.bu_math_time.label_tag }}
+          <input id="{{ form.bu_math_time.id_for_label}}" value="{{ form.bu_math_time.value}}" type="number" step="0.01" class="form-control" name="{{ form.bu_math_time.name }}" required>
+        </div>
+        <div class="form-group col-md-2">
+          {{ form.bu_cs_time.label_tag }}
+          <input id="{{ form.bu_cs_time.id_for_label}}" value="{{ form.bu_cs_time.value}}" type="number" step="0.01" class="form-control" name="{{ form.bu_cs_time.name }}" required>
+        </div>
+        <div class="form-group col-md-2">
+          {{ form.bu_lg_de_time.label_tag }}
+          <input id="{{ form.bu_lg_de_time.id_for_label}}" value="{{ form.bu_lg_de_time.value}}" type="number" step="0.01" class="form-control" name="{{ form.bu_lg_de_time.name }}" required>
+        </div>
+        <div class="form-group col-md-2">
+          {{ form.bu_lg_fr_time.label_tag }}
+          <input id="{{ form.bu_lg_fr_time.id_for_label}}" value="{{ form.bu_lg_fr_time.value}}" type="number" step="0.01" class="form-control" name="{{ form.bu_lg_fr_time.name }}" required>
+        </div>
+        <div class="form-group col-md-2">
+          {{ form.bu_lg_jap_time.label_tag }}
+          <input id="{{ form.bu_lg_jap_time.id_for_label}}" value="{{ form.bu_lg_jap_time.value}}" type="number" step="0.01" class="form-control" name="{{ form.bu_lg_jap_time.name }}" placeholder="Jap Time*" required>
+        </div>
+        <div class="form-group col-md-2">
+          {{ form.bu_others_time.label_tag }}
+          <input id="{{ form.bu_others_time.id_for_label}}" value="{{ form.bu_others_time.value}}" type="number" step="0.01" class="form-control" name="{{ form.bu_others_time.name }}" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- OpK Section -->
+    <div class="section mx-2 my-4" id="OpK">
+      <h3 class="py-2">#3) OpK Section</h3>
+      <div class="form-row d-flex">
+        <div class="form-group col-md-3">
+          OpK.Tourne
+          <textarea type="text" rows="3" class="form-control" name="{{ form.opk_tourne_details.name }}" placeholder="OpK.Tourne" placeholder="Tourné">{{ form.opk_tourne_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-3">
+          OpK.Gobasquing
+          <textarea type="text" rows="3" class="form-control" name="{{ form.opk_gobasquing_details.name }}" placeholder="OpK.GoBasquing">{{ form.opk_gobasquing_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-2">
+          OpK.Tries
+          <textarea type="text" rows="3" class="form-control" name="{{ form.opk_tries_details.name }}" placeholder="OpK.Tries">{{ form.opk_tries_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-2">
+          OpK.Urgoiti
+          <textarea type="text" rows="3" class="form-control" name="{{ form.opk_urgoiti_details.name }}" placeholder="OpK.Urgoiti">{{ form.opk_urgoiti_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-2">
+          OpK.Others
+          <textarea type="text" rows="3" class="form-control" name="{{ form.opk_other_tours_details.name }}" placeholder="OpK.Others">{{ form.opk_other_tours_details.value }}</textarea>
+        </div>
+      </div>
+      <div class="form-row d-flex">
+          <div class="form-group col-md-1">
+            <input id="{{ form.opk_tourne_time.id_for_label}}" value="{{ form.opk_tourne_time.value}}" type="number" step="0.01" class="form-control mx-auto" name="{{ form.opk_tourne_time.name }}" required>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="form-group col-md-1">
+            <input id="{{ form.opk_gobasquing_time.id_for_label}}" value="{{ form.opk_gobasquing_time.value}}" type="number" step="0.01" class="form-control" name="{{ form.opk_gobasquing_time.name }}" required>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="form-group col-md-1">
+            <input id="{{ form.opk_tries_time.id_for_label}}" value="{{ form.opk_tries_time.value}}" type="number" step="0.01" class="form-control" name="{{ form.opk_tries_time.name }}" required>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="form-group col-md-1">
+            <input id="{{ form.opk_urgoiti_time.id_for_label}}" value="{{ form.opk_urgoiti_time.value}}" type="number" step="0.01" class="form-control" name="{{ form.opk_urgoiti_time.name }}" required>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="form-group col-md-1">
+            <input id="{{ form.opk_other_tours_time.id_for_label}}" value="{{ form.opk_other_tours_time.value}}" type="number" step="0.01" class="form-control" name="{{ form.opk_other_tours_time.name }}" required>
+          </div>
+      </div>
+    </div>
+
+    <!-- Stuff Box Section -->
+    <div class="section mx-2 my-4" id="StuffBox">
+      <h3 class="py-2">#4) Stuff Box Section</h3>
+      <div class="form-row d-flex justify-content-around">
+        <div class="form-group col-md-3">
+          StuffBox.Shared
+          <textarea type="text" rows="3" class="form-control" name="{{ form.stuff_shared_details.name }}" placeholder="StuffBox.Shared">{{ form.stuff_shared_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-3">
+          StuffBox.Ortu
+          <textarea type="text" rows="3" class="form-control" name="{{ form.stuff_ortu_details.name }}" placeholder="StuffBox.Ortu">{{ form.stuff_ortu_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-3">
+          StuffBox.Others
+          <textarea type="text" rows="3" class="form-control" name="{{ form.stuff_others_details.name }}" placeholder="StuffBox.Others">{{ form.stuff_others_details.value }}</textarea>
+        </div>
+      </div>
+      <div class="form-row d-flex justify-content-around">
+        <div class="form-group col-md-1">
+          <input type="number" step="0.01" class="form-control mx-auto" name="{{ form.stuff_shared_time.name }}" value="{{ form.stuff_shared_time.value }}" required>
+        </div>
+        <div class="form-group col-md-1">
+          <input type="number" step="0.01" class="form-control mx-auto" name="{{ form.stuff_ortu_time.name }}" value="{{ form.stuff_ortu_time.value }}" required>
+        </div>
+        <div class="form-group col-md-1">
+          <input type="number" step="0.01" class="form-control mx-auto" name="{{ form.stuff_others_time.name }}" value="{{ form.stuff_others_time.value }}" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sport Section -->
+    <div class="section mx-2 my-4" id="Sport">
+      <h3 class="py-2">#5) Sport Section</h3>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="form-row">
+            <div class="col-md-2">
+              <h3 class="my-4"><strong> Running</strong> </h3>
+              <h3 class="my-4"><strong>Bike</strong> </h3>
+              <h3 class="mt-4"><strong>Overall</strong> </h3>
+            </div>
+            <div class="form-group col-md-3">
+              <small class="form-text text-muted">Distance</small>
+              <input type="number" step="0.01" class="form-control" name="{{ form.sport_run_dst.name }}" value="{{ form.sport_run_dst.value }}" required>
+              <small class="form-text text-muted">Distance</small>
+              <input type="number" step="0.01" class="form-control" name="{{ form.sport_bike_dst.name }}" value="{{ form.sport_bike_dst.value }}" required>
+              <small class="form-text text-muted">Intensity</small>
+              <input type="number" step="0.01" class="form-control" name="{{ form.sport_intensity.name }}" value="{{ form.sport_intensity.value }}" required>
+            </div>
+            <div class="form-group col-md-3">
+              <small class="form-text text-muted">Time</small>
+              <input type="number" step="0.01" class="form-control" name="{{ form.sport_run_time.name }}" value="{{ form.sport_run_time.value }}" required>
+              <small class="form-text text-muted">Time</small>
+              <input type="number" step="0.01" class="form-control" name="{{ form.sport_bike_time.name }}" value="{{ form.sport_bike_time.value }}" required>
+              <small class="form-text text-muted">Calories</small>
+              <input type="number" step="0.01" class="form-control" name="{{ form.sport_cal.name }}" value="{{ form.sport_cal.value }}" required>
+            </div>
+            <div class="form-group col-md-2">
+              <small class="form-text text-muted">Pace</small>
+              <input type="text" class="form-control" name="{{ form.sport_run_pace.name }}" value="{{ form.sport_run_pace.value }}">
+              <small class="form-text text-muted">Altitude</small>
+              <input type="number" step="1" class="form-control" name="{{ form.sport_bike_alt.name }}" value="{{ form.sport_bike_alt.value }}" required>
+            </div>
+            <div class="form-group col-md-2">
+              <small class="form-text text-muted">Altitude</small>
+              <input type="number" step="1" class="form-control" name="{{ form.sport_run_alt.name }}" value="{{ form.sport_run_alt.value }}" required>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-row">
+            <div class="form-group col-md-9">
+              Other Sports:
+              <textarea type="text" rows="3" class="form-control" name="{{ form.sport_others_details.name }}" placeholder="Sport Others">{{ form.sport_others_details.value }}</textarea>
+            </div>
+            <div class="form-group col-md-3">
+              Time
+              <input type="number" step="0.01" class="form-control" name="{{ form.sport_others_time.name }}" value="{{ form.sport_others_time.value }}" required>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KiC Section -->
+    <div class="section mx-2 my-4" id="KiC">
+      <h3 class="py-2">#6) KiC Section</h3>
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <textarea type="text" rows="3" class="form-control" name="{{ form.kic_details.name }}" placeholder="KiC Details">{{ form.kic_details.value }}</textarea>
+        </div>
+        <div class="form-group col-md-1">
+          <input type="number" step="0.01" class="form-control" name="{{ form.kic_time.name }}" value="{{ form.kic_time.value }}" required>
+        </div>
+        <div class="form-group col-md-2">
+          <input type="number" step="0.01" class="form-control" name="{{ form.junk_stuff_time.name }}" value="{{ form.junk_stuff_time.value }}" required>
+          <small class="form-text text-muted">Junk Stuff</small>
+          <input type="number" step="0.01" class="form-control" name="{{ form.stuff_sleeping_time.name }}" value="{{ form.stuff_sleeping_time.value }}" required>
+          <small class="form-text text-muted">Sleep time</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="fixed-bottom bottom_bar">
+      <div class="d-flex justify-content-between">
+        <div class="row">
+          <a href="#main" class="btn bottom_button ml-4 mr-1" id="main_btn">Main</a>
+            <a href="#BuildUp" class="btn bottom_button mx-1" id="bu_btn">BuildUp</a>
+            <a href="#OpK" class="btn bottom_button mx-1" id="opk_btn">OpK</a>
+            <a href="#StuffBox" class="btn bottom_button mx-1" id="stuff_btn">StuffBox</a>
+            <a href="#Sport" class="btn bottom_button mx-1" id="sport_btn">Sport</a>
+            <a href="#KiC" class="btn bottom_button ml-1" id="kic_btn">KiC</a>
+        </div>
+      <!-- </div>
+      <div class="d-flex justify-content-end"> -->
+        <div class="row">
+          <button type="submit" class="btn btn-primary mr-2">Save</button>
+          <button type="reset" class="btn btn-secondary mr-4">Reset</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
