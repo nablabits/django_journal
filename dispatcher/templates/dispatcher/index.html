@@ -47,22 +47,18 @@
       </div>
     </nav>
     <header>
-      <div class="container">
-        <h1><strong>Weekly sumary index page</strong></h1>
-        <h5>V1.0 · Created: Oct 24, 2017</h5>
+      <div class="container dispatcher-header">
+        <div class="d-flex">
+          <h1 class="mx-auto"><strong>Django-based Personal Journal</strong></h1>
+        </div>
       </div>
     </header>
-  <!-- </body> -->
-    <div class="d-flex">
-      <div class="row">
-        {% block nav %}
-        {% endblock %}
-        {% block 2018content %}
-        {% endblock %}
-        {% block 2017content %}
-        {% endblock %}
-        {% block edit %}
-        {% endblock %}
+    <div class="container mt-4">
+      <div class="d-flex justify-content-center mt-4">
+        <a href="{% url 'main' %}" class="btn btn-outline-info btn-lg m-2"> Overview</a>
+        <a href="{% url 'main' %}" class="btn btn-outline-info btn-lg m-2"> Incomes</a>
+        <a href="{% url 'main' %}" class="btn btn-outline-info btn-lg m-2"> Api</a>
+        <a href="{% url 'main' %}" class="btn btn-outline-info btn-lg m-2"> Admin</a>
       </div>
     </div>
   </body>

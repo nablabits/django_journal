@@ -3,7 +3,6 @@ from django.utils import timezone
 from .models import Weekly
 from .forms import PostForm
 from django.db.models import Avg
-from .avgfn import Year2017, Year2018
 
 
 def week_log(request):

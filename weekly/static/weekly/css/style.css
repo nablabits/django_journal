@@ -149,5 +149,6 @@ header{
 .sport{
   position: absolute;
   bottom: 30;
-
 }
+
+.dispatcher-header{height: 30vh;}

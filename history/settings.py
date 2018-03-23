@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'weekly',
     'incomes',
     'rest_framework',
+    'dispatcher',
 ]
 
 MIDDLEWARE = [
