@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block incomes %}
+  <div class="container">
+
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-historic-tab" data-toggle="tab" href="#nav-historic" role="tab" aria-controls="nav-historic" aria-selected="true">History</a>
+        <a class="nav-item nav-link" id="nav-month-tab" data-toggle="tab" href="#nav-month" role="tab" aria-controls="nav-month" aria-selected="false">Monthly Progress</a>
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="nav-historic" role="tabpanel" aria-labelledby="nav-historic-tab">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Origin</th>
+              <th scope="col">Cash</th>
+              <th scope="col">Tip</th>
+              <th scope="col">Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for income in last5 %}
+              <tr>
+                <th scope="row">{{ income.date }}</th>
+                <td>{{ income.who }}</td>
+                <td>{{ income.cash }}</td>
+                <td>{{ income.tip }}</td>
+                <td>{{ income.comments }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="nav-month" role="tabpanel" aria-labelledby="nav-month-tab">...</div>
+    </div>
+
+
+  </div>
+
+{% endblock %}

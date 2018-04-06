@@ -1,4 +1,5 @@
 from django.views.generic import ListView
+from django.shortcuts import render
 from .models import Income, Hour
 from datetime import date
 from django.db.models import Sum
@@ -18,15 +19,20 @@ def MainView(request):
         incomes_list = Income.objects.filter(date__month=month)
         incomes = incomes_list.aggregate(Sum('cash'))
 
-        hours_list = Hour.objects.filter(date__month=month)
-        hours = hours_list.aggregate(Sum('cash'))
+        hours_list = Hour.objects.filter(month=month)
+        hours = hours_list.aggregate(Sum('dedication'))
 
         incomes = incomes['cash__sum']
-        hours = hours['cash__sum']
-        ratio = incomes / hours
+        hours = hours['dedication__sum']
+        if hours == 0 or hours is None:
+            ratio = 'NaN'
+        else:
+            ratio = incomes / hours
 
         data = (month, incomes, hours, ratio)
         return data
+
+    last5 = Income.objects.order_by('date').reverse()[:5]
 
     df = []
     this_month = date.today().month
@@ -34,6 +40,7 @@ def MainView(request):
         data = month_str(month)
         df.append(data)
 
-    dict4view = {'df': df, }
+    dict4view = {'df': df,
+                 'last5': last5}
 
     return render(request, 'incomes/complex.html', dict4view)
