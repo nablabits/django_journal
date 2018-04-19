@@ -34,7 +34,29 @@
           </tbody>
         </table>
       </div>
-      <div class="tab-pane fade" id="nav-month" role="tabpanel" aria-labelledby="nav-month-tab">...</div>
+      <div class="tab-pane fade" id="nav-month" role="tabpanel" aria-labelledby="nav-month-tab">
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Month</th>
+              <th scope="col">Cash</th>
+              <th scope="col">Time</th>
+              <th scope="col">Ratio</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for month, incomes, hours, ratio in df %}
+              <tr>
+                  <th scope="row">{{ month }}</th>
+                  <th>{{ incomes }}</th>
+                  <th>{{ hours }}</th>
+                  <th>{{ ratio }}</th>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
 
 
