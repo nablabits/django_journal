@@ -80,10 +80,14 @@ class ViewUtils(object):
         for customer in customers:
             income = incomes.filter(who=customer.id).aggregate(Sum('cash'))
             hour = hours.filter(who=customer.id).aggregate(Sum('dedication'))
+            income = income['cash__sum']
+            hour = hour['dedication__sum']
             month_name = date(2018, month, 1).strftime('%B')
-            if not incomes:
+            if not income or not hour:
                 data = None
             else:
-                data = (month_name, customer.name, income, hour)
+                income = round(income, 2)
+                ratio = round(income / hour, 2)
+                data = (month_name, customer.name, income, hour, ratio)
             result.append(data)
         return result
