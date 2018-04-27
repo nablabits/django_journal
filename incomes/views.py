@@ -17,18 +17,23 @@ def MainView(request):
     utils = ViewUtils()
 
     df, details = [], []
-    this_month = date.today().month
+    this_month = date.today().month + 1
     for month in range(1, this_month):
         data_month = utils.MonthSummary(month)
         data_by_customer = utils.MonthDropDown(month)
         df.append(data_month)
-        details.append(month, data_by_customer)
+        for row in data_by_customer:
+            if row is None:
+                pass
+            else:
+                details.append(row)
 
     last5 = utils.last5
 
     dict4view = {'df': df,
-                 # 'detail': detail,
-                 'last5': last5}
+                 'details': details,
+                 'last5': last5,
+                 }
 
     return render(request, 'incomes/complex.html', dict4view)
 
@@ -75,8 +80,10 @@ class ViewUtils(object):
         for customer in customers:
             income = incomes.filter(who=customer.id).aggregate(Sum('cash'))
             hour = hours.filter(who=customer.id).aggregate(Sum('dedication'))
-            data = (customer.name, income, hour)
-            result.append(data)
             month_name = date(2018, month, 1).strftime('%B')
-
-        return (result)
+            if not incomes:
+                data = None
+            else:
+                data = (month_name, customer.name, income, hour)
+            result.append(data)
+        return result

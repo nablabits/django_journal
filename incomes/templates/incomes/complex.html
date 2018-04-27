@@ -35,7 +35,6 @@
         </table>
       </div>
       <div class="tab-pane fade" id="nav-month" role="tabpanel" aria-labelledby="nav-month-tab">
-
         <table class="table table-striped">
           <thead>
             <tr>
@@ -56,6 +55,9 @@
             {% endfor %}
           </tbody>
         </table>
+        {% for month, name, income, hour in details %}
+          {{ month }}, {{ name }}, {{ income }}, {{ hour }}
+        {% endfor %}
       </div>
     </div>
 
