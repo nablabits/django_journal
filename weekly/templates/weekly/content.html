@@ -1,6 +1,6 @@
 {% extends 'weekly/base.html' %}
   {% block nav %}
-    <div class="col-md-2">
+    <div class="col-md-3">
       <div class="ml-2 nav_block" id="side_nav">
         <h2> Nav panel </h2>
         <div class="nav_scrollarea">
@@ -19,7 +19,7 @@
   {% endblock %}
 
   {% block 2018content %}
-    <div class="col-md-10">
+    <div class="col-md-8">
       <p><strong>[On 2017]</strong>
         <span class="px-2">Avg rate: {{avg_rate}}</span>
         <span class="px-2">Avg sleep: {{avg_sleep}}h</span>
@@ -51,7 +51,7 @@
               </span>
             </div>
             <div class="row">
-              <div class="col-sm-12 col-md-4">
+              <div class="col-sm-12 col-md-3 d-flex flex-column">
                 <div class="title_button bgcustom_blue mb-2">
                   <strong>{{weekly_list.week_name}} week <br> {{ weekly_list.week_started }}</strong>
                 </div>
@@ -84,7 +84,7 @@
                 <h3><strong>Highlights:</strong></h3>
                 <div class="pl-2 highlights">{{weekly_list.highlights|safe}}</div>
               </div>
-              <div class="col-sm-12 col-md-3">
+              <div class="col-sm-12 col-md-4">
                 <h3><strong>Leaks:</strong></h3>
                 <div class="pl-2">{{weekly_list.leaks|safe}}</div>
               </div>
