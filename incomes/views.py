@@ -52,23 +52,27 @@ class ViewUtils(object):
         float), the incomes (rounded float) & the ratio (rounded float).
         """
         incomes = self.incomes(date__month=month).aggregate(Sum('cash'))
+        tips = self.incomes(date__month=month).aggregate(Sum('tip'))
         hours = self.hours(month=month).aggregate(Sum('dedication'))
 
+        month_name = date(2018, month, 1).strftime('%B')
+        incomes, tips = incomes['cash__sum'], tips['tip__sum']
+        hours = hours['dedication__sum']
+
+        if not tips:
+            tips = 0
         if not incomes:
             incomes = 0
-        else:
-            incomes = round(incomes['cash__sum'], 2)
-        hours = hours['dedication__sum']
+
+        total_incomes = round(incomes + tips, 2)
+
         if hours == 0 or hours is None:
             hours = 0
             ratio = 'NaN'
         else:
-            hours = round(hours)
-            ratio = round(incomes / hours, 2)
+            ratio = round(total_incomes / hours, 2)
 
-        month_name = date(2018, month, 1).strftime('%B')
-
-        data = (month_name, incomes, hours, ratio)
+        data = (month_name, total_incomes, hours, ratio)
         return data
 
     def MonthDropDown(self, month):
@@ -82,15 +86,22 @@ class ViewUtils(object):
         result = []
         for customer in customers:
             income = incomes.filter(who=customer.id).aggregate(Sum('cash'))
+            tips = incomes.filter(who=customer.id).aggregate(Sum('tip'))
             hour = hours.filter(who=customer.id).aggregate(Sum('dedication'))
-            income = income['cash__sum']
-            hour = hour['dedication__sum']
+
             month_name = date(2018, month, 1).strftime('%B')
-            if not income or not hour:
+            income, tips = income['cash__sum'], tips['tip__sum']
+            hour = hour['dedication__sum']
+
+            if not tips:
+                tips = 0
+            if not income:
+                income = 0
+            if not hour:
                 data = None
             else:
-                income = round(income, 2)
-                ratio = round(income / hour, 2)
-                data = (month_name, customer.name, income, hour, ratio)
+                total_income = income + tips
+                ratio = round(total_income / hour, 2)
+                data = (month_name, customer.name, total_income, hour, ratio)
             result.append(data)
         return result
