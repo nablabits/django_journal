@@ -54,7 +54,10 @@ class ViewUtils(object):
         incomes = self.incomes(date__month=month).aggregate(Sum('cash'))
         hours = self.hours(month=month).aggregate(Sum('dedication'))
 
-        incomes = round(incomes['cash__sum'], 2)
+        if not incomes:
+            incomes = 0
+        else:
+            incomes = round(incomes['cash__sum'], 2)
         hours = hours['dedication__sum']
         if hours == 0 or hours is None:
             hours = 0
