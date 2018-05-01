@@ -35,10 +35,10 @@
             <a class="nav-link" href="#">Stats</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="{% url 'incomes' %}">Incomes</a>
+            <a class="nav-link" href="{% url 'main_incomes' %}">Incomes</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="./weekly_API">API</a>
+            <a class="nav-link" href="./API">API</a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
@@ -56,9 +56,9 @@
     <div class="container mt-4">
       <div class="d-flex justify-content-center mt-4">
         <a href="{% url 'main' %}" class="btn btn-outline-info btn-lg m-2"> Overview</a>
-        <a href="{% url 'main' %}" class="btn btn-outline-info btn-lg m-2"> Incomes</a>
-        <a href="{% url 'main' %}" class="btn btn-outline-info btn-lg m-2"> Api</a>
-        <a href="{% url 'main' %}" class="btn btn-outline-info btn-lg m-2"> Admin</a>
+        <a href="{% url 'main_incomes' %}" class="btn btn-outline-info btn-lg m-2"> Incomes</a>
+        <a href="./API" class="btn btn-outline-info btn-lg m-2"> Api</a>
+        <a href="{% url 'admin:index' %}" class="btn btn-outline-info btn-lg m-2"> Admin</a>
       </div>
     </div>
   </body>
