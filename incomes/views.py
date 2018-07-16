@@ -15,6 +15,12 @@ class IncomesList(ListView):
 def MainView(request):
     """Display several queries to get a more complex view based on tabs."""
     utils = ViewUtils()
+    cash_incomes = Income.objects.all().aggregate(Sum('cash'))
+    tip_incomes = Income.objects.all().aggregate(Sum('tip'))
+    total_incomes = cash_incomes['cash__sum'] + tip_incomes['tip__sum']
+    total_hours = Hour.objects.all().aggregate(Sum('dedication'))
+    total_hours = total_hours['dedication__sum']
+    total_ratio = round(total_incomes/ total_hours, 2)
 
     df, details = [], []
     this_month = date.today().month + 1
@@ -33,6 +39,9 @@ def MainView(request):
     dict4view = {'df': df,
                  'details': details,
                  'last5': last5,
+                 'total_hours': total_hours,
+                 'total_incomes': total_incomes,
+                 'total_ratio': total_ratio,
                  }
 
     return render(request, 'incomes/complex.html', dict4view)

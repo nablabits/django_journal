@@ -34,6 +34,7 @@
           </tbody>
         </table>
       </div>
+
       <div class="tab-pane fade" id="nav-month" role="tabpanel" aria-labelledby="nav-month-tab">
         <table class="table">
           <thead>
@@ -52,7 +53,6 @@
                   <th>{{ hours }}h</th>
                   <th>{{ ratio }}€/h</th>
               </tr>
-              <!-- <div class="collapse" id="collapse{{month}}"> -->
                 {% for month_detail, name, income, hour, ratio in details %}
                   {% if month_detail == month %}
                   <tr class="collapse multi-collapse{{month}} text-secondary" id="multi-collapse{{month}}">
@@ -63,8 +63,13 @@
                   </tr>
                   {% endif %}
                 {% endfor %}
-              <!-- </div> -->
-            {% endfor %}
+              {% endfor %}
+            <tr class="table-info">
+              <th scope="row"><strong>Total</strong></th>
+              <th scope="row">{{total_incomes}}€</th>
+              <th scope="row">{{total_hours}}h</th>
+              <th scope="row">{{total_ratio}}€/h</th>
+            </tr>
           </tbody>
         </table>
 
